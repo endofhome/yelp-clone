@@ -32,8 +32,7 @@ feature 'restaurants' do
   end
 
   context 'viewing restaurants' do
-
-    let!(:kfc){Restaurant.create(name:'KFC')}
+    let!(:kfc){ Restaurant.create(name: 'KFC') }
 
     scenario 'lets a user view a restaurant' do
       visit '/restaurants'
@@ -44,8 +43,7 @@ feature 'restaurants' do
   end
 
   context 'editing restaurants' do
-
-    before { Restaurant.create name: 'KFC' }
+    before { Restaurant.create(name: 'KFC') }
 
     scenario 'let a user edit a restaurant' do
       visit '/restaurants'
@@ -58,8 +56,7 @@ feature 'restaurants' do
   end
 
   context 'deleting restaurants' do
-
-    before {Restaurant.create name: 'KFC'}
+    before { Restaurant.create(name: 'KFC') }
 
     scenario 'removes a restaurant when a user clicks a delete link' do
       visit '/restaurants'
