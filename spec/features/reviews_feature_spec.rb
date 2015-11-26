@@ -18,8 +18,12 @@ feature "reviewing" do
   end
 
   scenario 'displays an average rating for all reviews' do
-    create_review('KFC', 'So so', '3')
-    create_review('KFC', 'Great', '5')
-    expect(page).to have_content('Average rating: 4')
+    sign_up("test@test.com", "12345678")
+    create_restaurant("KFC")
+    create_review("KFC", "So so", "3")
+    sign_out
+    sign_up("toast@toast.com", "1234qwer")
+    create_review("KFC", "Great", "5")
+    expect(page).to have_content("Average rating: 4")
   end
 end
