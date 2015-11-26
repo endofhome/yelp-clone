@@ -18,4 +18,12 @@ module User_helpers
   def sign_out
     click_link("Sign out")
   end
+
+  def create_review(name, thoughts, rating)
+    visit("/restaurants")
+    click_link("Review #{name}")
+    fill_in("Thoughts", with: thoughts)
+    select(rating, from: "Rating")
+    click_button("Leave Review")
+  end
 end
