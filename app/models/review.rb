@@ -1,2 +1,3 @@
-# class Review < ActiveRecord::Base
-# end
+class Review < ActiveRecord::Base
+  belongs_to :restaurant
+end
