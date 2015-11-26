@@ -24,6 +24,6 @@ feature "reviewing" do
     sign_out
     sign_up("toast@toast.com", "1234qwer")
     create_review("KFC", "Great", "5")
-    expect(page).to have_content("Average rating: 4")
+    expect(page).to have_content("Average rating: ★★★★☆")
   end
 end
