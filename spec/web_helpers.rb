@@ -1,10 +1,21 @@
 module User_helpers
-  def sign_up
+  def sign_up(email, password)
     visit('/')
     click_link('Sign up')
-    fill_in(:user_email, with: 'testing@test.com')
-    fill_in(:user_password, with: '12345678')
-    fill_in(:user_password_confirmation, with: '12345678')
+    fill_in(:user_email, with: email)
+    fill_in(:user_password, with: password)
+    fill_in(:user_password_confirmation, with: password)
     click_button('Sign up')
+  end
+
+  def create_restaurant(name)
+    visit("/restaurants")
+    click_link("Add a restaurant")
+    fill_in("Name", with: name)
+    click_button("Create Restaurant")
+  end
+
+  def sign_out
+    click_link("Sign out")
   end
 end

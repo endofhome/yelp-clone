@@ -1,6 +1,7 @@
 class RestaurantsController < ApplicationController
 
   before_action :authenticate_user!, :except => [:index, :show]
+  before_action :build_restaurant, :only => [:destroy, :edit, :update]
 
   def index
     @restaurants = Restaurant.all
@@ -12,6 +13,7 @@ class RestaurantsController < ApplicationController
 
   def create
     @restaurant = Restaurant.new(restaurant_params)
+    @restaurant.user_id = current_user.id
     if @restaurant.save
       redirect_to restaurants_path
     else
@@ -44,4 +46,16 @@ class RestaurantsController < ApplicationController
     flash[:notice] = 'Restaurant deleted successfully'
     redirect_to '/restaurants'
   end
+
+  def build_restaurant
+    @restaurant = Restaurant.find(params[:id])
+    unless current_user.id == @restaurant.user_id
+      flash[:notice] = "You didn\'t create the restaurant"
+      redirect_to restaurant_path
+    end
+  end
+
 end
+
+
+

@@ -23,21 +23,15 @@ feature "restaurants" do
 
   context "creating restaurants" do
     scenario "prompts user to fill out a form, then displays the new restaurant" do
-      sign_up
-      visit("/restaurants")
-      click_link("Add a restaurant")
-      fill_in("Name", with: "KFC")
-      click_button("Create Restaurant")
+      sign_up("test@test.com", "12345678")
+      create_restaurant("KFC")
       expect(page).to have_content("KFC")
       expect(current_path).to eq("/restaurants")
     end
 
     scenario "does not let you submit a name that is too short" do
-      sign_up
-      visit("/restaurants")
-      click_link("Add a restaurant")
-      fill_in("Name", with: "kf")
-      click_button("Create Restaurant")
+      sign_up("test@test.com", "12345678")
+      create_restaurant("kf")
       expect(page).not_to have_css("h2", text: "kf")
       expect(page).to have_content("error")
     end
@@ -62,10 +56,9 @@ feature "restaurants" do
   end
 
   context "editing restaurants" do
-    before { Restaurant.create(name: "KFC") }
-
     scenario "let a user edit a restaurant" do
-      sign_up
+      sign_up("test@test.com", "12345678")
+      create_restaurant("KFC")
       visit("/restaurants")
       click_link("Edit KFC")
       fill_in("Name", with: "Kentucky Fried Chicken")
@@ -73,17 +66,36 @@ feature "restaurants" do
       expect(page).to have_content("Kentucky Fried Chicken")
       expect(current_path).to eq("/restaurants")
     end
+
+    scenario "user can not edit a restaurant which they didn't create" do
+      sign_up("test@test.com", "12345678")
+      create_restaurant("KFC")
+      sign_out
+      sign_up("ronin@ronin.co.uk", "1234qwer")
+      visit("/restaurants")
+      click_link("Edit KFC")
+      expect(page).to have_content("You didn\'t create the restaurant")
+    end
   end
 
   context "deleting restaurants" do
-    before { Restaurant.create(name: "KFC") }
-
     scenario "removes a restaurant when a user clicks a delete link" do
-      sign_up
+      sign_up("test@test.com", "12345678")
+      create_restaurant("KFC")
       visit("/restaurants")
       click_link("Delete KFC")
       expect(page).not_to have_content("KFC")
       expect(page).to have_content("Restaurant deleted successfully")
+    end
+
+    scenario "user can not delete a restaurant which they didn't create" do
+      sign_up("test@test.com", "12345678")
+      create_restaurant("KFC")
+      sign_out
+      sign_up("toast@toast.com", "abcdefgh")
+      visit("/restaurants")
+      click_link("Delete KFC")
+      expect(page).to have_content("You didn\'t create the restaurant")
     end
   end
 end
