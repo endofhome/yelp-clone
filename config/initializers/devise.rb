@@ -245,7 +245,7 @@ Devise.setup do |config|
   #   manager.intercept_401 = false
   #   manager.default_strategies(scope: :user).unshift :some_external_strategy
   # end
-  config.omniauth :facebook, "FACEBOOK_APP_ID", "FACEBOOK_APP_SECRET"
+  config.omniauth :facebook, "#{Rails.application.secrets.facebook_app_id}", "#{Rails.application.secrets.facebook_app_secret}", scope: 'email', info_fields: 'email, name'
 
   # ==> Mountable engine configurations
   # When using Devise inside an engine, let's call it `MyEngine`, and this engine
